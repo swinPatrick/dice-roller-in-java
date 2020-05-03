@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Properties; 
  
 // dice roller java source code
 // Also outputs the dice face as ASCII art
@@ -12,7 +13,10 @@ public class DiceRollerInJava {
                            { { 0, 0, 1 }, { 0, 1, 0 }, { 1, 0, 0 } }, 
                            { { 1, 0, 1 }, { 0, 0, 0 }, { 1, 0, 1 } },
                            { { 1, 0, 1 }, { 0, 1, 0 }, { 1, 0, 1 } }, 
-                           { { 1, 0, 1 }, { 1, 0, 1 }, { 1, 0, 1 } }
+                           { { 1, 0, 1 }, { 1, 0, 1 }, { 1, 0, 1 } },
+						   { { 1, 0, 1 }, { 1, 1, 1 }, { 1, 0, 1 } },
+						   { { 1, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } },
+						   { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } }
                            };
     
     // ANSI colour codes
@@ -48,33 +52,90 @@ public class DiceRollerInJava {
                 */
                 default:
                     System.out.println("Option not Recognised... type 'help' to see a list of options.");
+					
                     break;
 
                 // Show the list of options the user can choose from
                 case "help":
                     System.out.println("Here are your options:");
                     System.out.println("\troll: roll the dice.");
-                    System.out.println("\tcheat: roll the dice to the number you want");
+					System.out.println("\tcheat: roll the dice to the number you want");
                     System.out.println("\tcolour: change the colour the terminal prints in.");
                     System.out.println("\thistory: show the last 10 rolls.");
                     System.out.println("\texit: leave the program.");
                     break;
+				
+				
+						
 
-                // Roll the dice normally
+					
+                //Roll the dice normally
                 case "roll": 
-                    int result = dice.roll(); // roll the dice and save the result
-                    dice.draw(result); // show the user what they rolled
-                    rollHistory = dice.addToHistory(result, rollHistory); // add the roll to history
-                    break;
+					// Select the type of dice
+					
+					
+					String dice6 = "6 Sided dice";
+					System.setProperty(dice6,"6");
+					
+					String dice9 = "9 Sided dice";
+					System.setProperty(dice9, "9");
+					
+					
+					int type;
+					
+					System.out.println("Select the type of the dice you want to roll: (input number)");
+					System.out.println("\t6 sided dice");
+					System.out.println("\t9 sided dice");
+					userInput = System.console().readLine(); // read response
+					
+					int uInput = Integer.parseInt(userInput);
+					if (uInput != 6 && uInput != 9)
+					{
+						System.out.println("Please select an appropriate dice");
+					break;
+					}		
+					
+					if (uInput == 6 )
+					{
+						type = Integer.getInteger("6 Sided dice");
+						do
+						{
+							int result = dice.roll(type); // roll the dice and save the result
+							dice.draw(result); // show the user what they rolled
+							rollHistory = dice.addToHistory(result, rollHistory); // add the roll to history
+							System.out.println("Do you want to change the dice? (y/n)");
+							userInput = System.console().readLine();
+							userInput.toLowerCase(); // change to be readable
+						}
+						while (!userInput.equals("y"));
+					}
+					
+					
+					if (uInput == 9 )
+					{
+						type = Integer.getInteger("9 Sided dice");
+						do
+						{
+							int result = dice.roll(type); // roll the dice and save the result
+							dice.draw(result); // show the user what they rolled
+							rollHistory = dice.addToHistory(result, rollHistory); // add the roll to history
+							System.out.println("Do you want to change the dice? (y/n)");
+							userInput = System.console().readLine();
+							userInput.toLowerCase(); // change to be readable
+						}
+						while (!userInput.equals("y"));
+					}
+					break;
+				
 
                 // Roll a specific number
                 case "cheat":
                     int request = 0;
-                    System.out.println("What number would you like rolled? (1-6): ");
+                    System.out.println("What number would you like rolled? (1-9): ");
                     try
                     {   // try to parse string input into an integer
                         request = Integer.parseInt(System.console().readLine()); //get user input
-                        if(request >= 1 && request <= 6) //check if valid
+                        if(request >= 1 && request <= 9) //check if valid
                             {
                                 dice.draw(request); // show user the dice
                                 rollHistory = dice.addToHistory(request, rollHistory); // add roll to history
@@ -132,11 +193,12 @@ public class DiceRollerInJava {
     }
 
     // Roll the dice in Java
-    private int roll() {
+    private int roll(int type) {
         Random r = new Random();
-        return r.nextInt(6) + 1;
+        return r.nextInt(type) + 1;
     }
 
+	
     private void SelectColor()
     {
         System.out.println("\n\nSelect a color");
