@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.Scanner;
  
 // dice roller java source code
 // Also outputs the dice face as ASCII art
@@ -15,58 +14,101 @@ public class DiceRollerInJava {
                            { { 1, 0, 1 }, { 0, 1, 0 }, { 1, 0, 1 } }, 
                            { { 1, 0, 1 }, { 1, 0, 1 }, { 1, 0, 1 } }
                            };
+    
+    // ANSI colour codes
+    static final String ANSI_RESET = "\u001B[0m";
+    static final String ANSI_BLACK = "\u001B[30m";
+    static final String ANSI_RED = "\u001B[31m";
+    static final String ANSI_GREEN = "\u001B[32m";
+    static final String ANSI_YELLOW = "\u001B[33m";
+    static final String ANSI_BLUE = "\u001B[34m";
+    static final String ANSI_PURPLE = "\u001B[35m";
+    static final String ANSI_CYAN = "\u001B[36m";
+    static final String ANSI_WHITE = "\u001B[37m";
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         DiceRollerInJava dice = new DiceRollerInJava();
-        int input = 0, a = 0;
-        while (input != 5) {
-            Scanner ScanInt = new Scanner( System.in );
-            System.out.println("\n 1. Circle\n 2. Change the color\n 3. Record\n 4. Number \n 5. Quit");
-            input = ScanInt.nextInt();
-            //ScanInt.close();
-            int result = dice.roll();
-            int data[] = new int[10];
+        int rollHistory[] = new int[0]; // rollHistory keeps track of ALL rolls the user makes in this session
 
-            //if(input != 3)
-            //data[a] = result;
-            System.out.println(" result = " + result);
-            a++;
-            
-            System.out.println(" data[a] = " + data[a]);
-            switch(input)
+        String userInput = "";
+        while(userInput != "exit")
+        {
+            // Handle the user input
+            System.out.println("\nWhat would you like to do next? "); // ask user
+            userInput = System.console().readLine(); // read response
+            userInput.toLowerCase(); // change to be readable
+
+            switch(userInput)
             {
-                case 1:
-                System.out.println("dice face value:" + result);
-                dice.draw(result);
-                break;
+                /*
+                    To add new function:
+                    - add keyword and description to 'help' (above 'exit' description)
+                    - add new case for keyword (above 'exit' case)
+                    - comment your function so others know what's what
+                */
+                default:
+                    System.out.println("Option not Recognised... type 'help' to see a list of options.");
+                    break;
 
-                case 2:         
-                dice.SelectColor();
-                break;
+                // Show the list of options the user can choose from
+                case "help":
+                    System.out.println("Here are your options:");
+                    System.out.println("\troll: roll the dice.");
+                    System.out.println("\tcheat: roll the dice to the number you want");
+                    System.out.println("\tcolour: change the colour the terminal prints in.");
+                    System.out.println("\thistory: show the last 10 rolls.");
+                    System.out.println("\texit: leave the program.");
+                    break;
 
-                case 3:
-                for(int x = 0; x < data.length; x++) {
-                    //if(data[x] == 0)
-                    //break;
-                    System.out.println(data[x]); 
-                }
-                break;
+                // Roll the dice normally
+                case "roll": 
+                    int result = dice.roll(); // roll the dice and save the result
+                    dice.draw(result); // show the user what they rolled
+                    rollHistory = dice.addToHistory(result, rollHistory); // add the roll to history
+                    break;
 
-                case 4:
-                int number = 0;
-                System.out.println(" The point u want");
-                number = ScanInt.nextInt();
-                dice.draw(number);
-                break;
+                // Roll a specific number
+                case "cheat":
+                    int request = 0;
+                    System.out.println("What number would you like rolled? (1-6): ");
+                    try
+                    {   // try to parse string input into an integer
+                        request = Integer.parseInt(System.console().readLine()); //get user input
+                        if(request >= 1 && request <= 6) //check if valid
+                            {
+                                dice.draw(request); // show user the dice
+                                rollHistory = dice.addToHistory(request, rollHistory); // add roll to history
+                                break;
+                            }
+                        
+                    }
+                    catch(Exception e){} // user entered text
+                    // if program reached here user either entered text or a number out of range
+                    System.out.println("Digit not recognised.");
+                    break;
 
+                // Change the output colour
+                case "colour":         
+                    dice.SelectColor();
+                    break;
 
-                case 5:
-                System.out.println("Bye!");
-                return;
+                // Print the roll history
+                case "history":
+                        System.out.println("You've rolled " + rollHistory.length + " times!"); // prints roll count
+                        System.out.println("Here al the results of those..."); 
+                        for(int i = 0; i < rollHistory.length; i++) // print each value in rollHistory
+                        {
+                            System.out.println(i+1 + ") " + rollHistory[i]);
+                        }
+                        break;
+
+                // give the user a nice message before they leave
+                case "exit":
+                        System.out.println("Going so soon? Bye!");
+                        return;
+
 
             }
-     
         }
     }
  
@@ -98,38 +140,46 @@ public class DiceRollerInJava {
     private void SelectColor()
     {
         System.out.println("\n\nSelect a color");
-        System.out.println("\033[39;49m" + " 1. Default");
-        System.out.println("\033[1;94m" + " 2. Blue");
-        System.out.println("\033[1;95m" + " 3. Puprle");
-        System.out.println("\033[31m" + " 4. Red");
-        System.out.println("\033[32m" + " 5. Green");               
-        //System.out.println("\033[44m" + "Background"+"\033[m");
-        //System.out.println("\033[45m" + "Background"+"\033[m");
-        int col = 0;
-        Scanner ScanInt = new Scanner( System.in );
-        col = ScanInt.nextInt();
+        System.out.println(ANSI_RESET + " 1. Default");
+        System.out.println(ANSI_BLUE + " 2. Blue");
+        System.out.println(ANSI_PURPLE + " 3. Puprle");
+        System.out.println(ANSI_RED + " 4. Red");
+        System.out.println(ANSI_GREEN + " 5. Green" + ANSI_RESET); 
 
-        switch(col)
+        String selection = System.console().readLine();
+        switch(selection)
         {
-            case 1:
-            System.out.println("\033[39;49m" + " Default");
-            break;
+            default: //set default case to result in default olour beeing chosen
+            case "Default":
+                System.out.println(ANSI_RESET+ " Default");
+                break;
 
-            case 2:
-            System.out.println("\033[1;94m" + " Blue");
-            break;
+            case "Blue":
+                System.out.println(ANSI_BLUE + " Blue");
+                break;
 
-            case 3:
-            System.out.println("\033[1;95m" + " Puprle");
-            break;
+            case "Purple":
+                System.out.println(ANSI_PURPLE + " Puprle");
+                break;
 
-            case 4:
-            System.out.println("\033[31m" + " Red");
-            break;
+            case "Red":
+                System.out.println(ANSI_RED + " Red");
+                break;
 
-            case 5:
-            System.out.println("\033[32m" + " Green"); 
-            break;
+            case "Green":
+                System.out.println(ANSI_GREEN + " Green"); 
+                break;
         }
     }
+
+    // Adds an additional integer to a preexisting array. In this case the history array.
+    private int[] addToHistory(int newValue, int oldArray[])
+    {
+        int newArray[] = new int[oldArray.length + 1]; // create a new array with room for a new value
+        for(int i = 0; i< oldArray.length; i++) // copy values from the old array to the new one
+            newArray[i] = oldArray[i];
+        newArray[oldArray.length] = newValue; // add the new value to the end of the array
+        return newArray;
+    }
+    
 }
