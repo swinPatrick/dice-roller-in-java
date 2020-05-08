@@ -42,9 +42,9 @@ public class DiceRollerInJava {
         System.out.println("/                 /");
         System.out.println("///////////////////\n");
         
-        int userSelection;
+        //int userSelection;
         String userInput = "";
-
+	/*
         do
         {
             // Handles user selection
@@ -53,6 +53,7 @@ public class DiceRollerInJava {
 
             if (userSelection == 1)
             {
+	*/
                 while(userInput != "exit")
                 {
                     // Handle the user input
@@ -177,6 +178,7 @@ public class DiceRollerInJava {
                     }
                 }
             }
+	/*
             else if (userSelection == 2)
             {
                 System.out.println("\nType any of the following methods on the terminal when you start");
@@ -188,6 +190,7 @@ public class DiceRollerInJava {
                 System.out.println("\n 'exit'\n - Exits the program\n");
             }
         } while (userSelection != 3);
+	*/
     }
     
     // Draw the dice face using ascii characters
