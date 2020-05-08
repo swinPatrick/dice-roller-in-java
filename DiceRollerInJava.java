@@ -24,7 +24,7 @@ public class DiceRollerInJava {
             
 			{ { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 } }, //8
             
-            { { 1, 0, 0, 0, 1, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 1, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }} }; //9
+            { { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 0, 0, 0, 0, 1, 0, 0, 0, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 0, 0, 1 }} }; //9
     
     // ANSI colour codes
     static final String ANSI_RESET = "\u001B[0m";
@@ -275,17 +275,17 @@ public class DiceRollerInJava {
         Random s = new Random();
         int symbol = s.nextInt(6) + 1;
         if(symbol == 1)
-        System.out.print("\033[1;94m" + "✈" + "\033[39;49m" );
+        System.out.print(ANSI_BLUE + "✈" + ANSI_RESET );
         if(symbol == 2)
-        System.out.print("\033[1;95m" + "✎" + "\033[39;49m" );
+        System.out.print(ANSI_PURPLE + "✎" + ANSI_RESET );
         if(symbol == 3)
-        System.out.print("\033[31m" + "㋡" + "\033[39;49m" );
+        System.out.print(ANSI_RED + "㋡" + ANSI_RESET );
         if(symbol == 4)
-        System.out.print("\033[32m" + "☢" + "\033[39;49m" );
+        System.out.print(ANSI_GREEN + "☢" +ANSI_RESET );
         if(symbol == 5)
-        System.out.print("\033[30m"+"♬" + "\033[39;49m" );
+        System.out.print(ANSI_CYAN+"♬" + ANSI_RESET );
         if(symbol == 6)
-        System.out.print("\033[33m"+"♖" + "\033[39;49m" );
+        System.out.print(ANSI_WHITE+"♖" + ANSI_RESET );
     }
 
     // Adds an additional integer to a preexisting array. In this case the history array.
