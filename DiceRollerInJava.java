@@ -34,6 +34,14 @@ public class DiceRollerInJava {
         DiceRollerInJava dice = new DiceRollerInJava();
         int rollHistory[] = new int[0]; // rollHistory keeps track of ALL rolls the user makes in this session
 
+	// Intro ASCII art
+        System.out.println("///////////////////");
+        System.out.println("/                 /");
+        System.out.println("/   DICE ROLLER   /");
+        System.out.println("/                 /");
+        System.out.println("///////////////////\n");	    
+
+	    
         String userInput = "";
         while(userInput != "exit")
         {
