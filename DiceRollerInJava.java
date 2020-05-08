@@ -72,17 +72,17 @@ public class DiceRollerInJava {
         Random s = new Random();
         int symbol = s.nextInt(6) + 1;
         if(symbol == 1)
-        System.out.print("✈");
+        System.out.print("\033[1;94m" + "✈" + "\033[39;49m" );
         if(symbol == 2)
-        System.out.print("✎");
+        System.out.print("\033[1;95m" + "✎" + "\033[39;49m" );
         if(symbol == 3)
-        System.out.print("㋡");
+        System.out.print("\033[31m" + "㋡" + "\033[39;49m" );
         if(symbol == 4)
-        System.out.print("☢");
+        System.out.print("\033[32m" + "☢" + "\033[39;49m" );
         if(symbol == 5)
-        System.out.print("♬");
+        System.out.print("\033[30m"+"♬" + "\033[39;49m" );
         if(symbol == 6)
-        System.out.print("♖");
+        System.out.print("\033[33m"+"♖" + "\033[39;49m" );
     }
 }
 
